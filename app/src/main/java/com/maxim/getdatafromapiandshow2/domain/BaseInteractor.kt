@@ -27,4 +27,8 @@ class BaseInteractor(
     override suspend fun saveFact() {
         repository.saveItem()
     }
+
+    override suspend fun removeItem(text: String) {
+        repository.removeItem(text)
+    }
 }

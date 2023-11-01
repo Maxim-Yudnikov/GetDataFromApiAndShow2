@@ -19,4 +19,8 @@ class BaseCacheDataSource(
     override suspend fun saveItem(fact: DataItem) = withContext(Dispatchers.IO) {
         dao.insertFact(fact.toRoomItem())
     }
+
+    override suspend fun removeItem(text: String) {
+        dao.removeFact(text)
+    }
 }

@@ -11,4 +11,7 @@ interface Dao {
 
     @Query("SELECT * FROM facts")
     suspend fun getAllFacts(): List<FactRoomModel>
+
+    @Query("DELETE from facts WHERE text IS :text")
+    suspend fun removeFact(text: String)
 }

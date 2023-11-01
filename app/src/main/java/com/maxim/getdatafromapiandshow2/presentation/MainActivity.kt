@@ -2,7 +2,6 @@ package com.maxim.getdatafromapiandshow2.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -23,11 +22,11 @@ class MainActivity : AppCompatActivity() {
         val viewModel = (application as App).viewModel
 
         actionButton.setOnClickListener {
-            viewModel.getFact()
+            viewModel.getItem()
         }
 
         favoriteButton.setOnClickListener {
-            viewModel.saveFact()
+            viewModel.saveItem()
             favoriteButton.isEnabled = false
         }
 
@@ -35,7 +34,11 @@ class MainActivity : AppCompatActivity() {
             it.show(textView, progressBar, actionButton, favoriteButton)
         }
 
-        val adapter = RecyclerViewAdapter(viewModel.communication)
+        val adapter = RecyclerViewAdapter(object : RecyclerViewAdapter.Listener {
+            override fun change(text: String) {
+                viewModel.removeItem(text)
+            }
+        }, viewModel.communication)
         recyclerView.adapter = adapter
         viewModel.observeList(this) {
             adapter.update()

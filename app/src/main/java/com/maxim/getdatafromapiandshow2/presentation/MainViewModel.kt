@@ -1,6 +1,5 @@
 package com.maxim.getdatafromapiandshow2.presentation
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -16,14 +15,14 @@ class MainViewModel(
     val communication: Communication,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
-    fun getFact() {
+    fun getItem() {
         viewModelScope.launch(dispatcher) {
             communication.show(State.Progress)
             interactor.getFact().mapToUi().show(communication)
         }
     }
 
-    fun saveFact() {
+    fun saveItem() {
         viewModelScope.launch(dispatcher) {
             interactor.saveFact()
             communication.showList(interactor.getAllFacts().map { it.mapToUi() })
@@ -32,6 +31,13 @@ class MainViewModel(
 
     fun getItemList() {
         viewModelScope.launch(dispatcher) {
+            communication.showList(interactor.getAllFacts().map { it.mapToUi() })
+        }
+    }
+
+    fun removeItem(text: String) {
+        viewModelScope.launch(dispatcher) {
+            interactor.removeItem(text)
             communication.showList(interactor.getAllFacts().map { it.mapToUi() })
         }
     }

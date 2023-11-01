@@ -6,6 +6,7 @@ interface UiItem {
     fun same(item: UiItem): Boolean
     fun show(communication: Communication)
     fun show(textView: TextView)
+    fun change(listener: RecyclerViewAdapter.Listener)
     class BaseUiItem(private val text: String): Abstract() {
         override fun show(communication: Communication) = communication.show(State.Success(text))
         override fun show(textView: TextView) {
@@ -14,6 +15,10 @@ interface UiItem {
 
         override fun same(item: UiItem): Boolean {
             return item is BaseUiItem && item.text == text
+        }
+
+        override fun change(listener: RecyclerViewAdapter.Listener) {
+            listener.change(text)
         }
     }
 
@@ -24,5 +29,6 @@ interface UiItem {
     abstract class Abstract : UiItem {
         override fun same(item: UiItem): Boolean = false
         override fun show(textView: TextView) {}
+        override fun change(listener: RecyclerViewAdapter.Listener) {}
     }
 }

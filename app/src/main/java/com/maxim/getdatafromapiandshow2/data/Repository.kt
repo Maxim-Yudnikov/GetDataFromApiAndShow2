@@ -6,4 +6,5 @@ interface Repository {
     suspend fun getItem(): DomainItem
     suspend fun getAllItems(): List<DomainItem>
     suspend fun saveItem()
+    suspend fun removeItem(text: String)
 }

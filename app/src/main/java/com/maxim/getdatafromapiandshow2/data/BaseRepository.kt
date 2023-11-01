@@ -32,4 +32,8 @@ class BaseRepository(
     override suspend fun saveItem() = withContext(Dispatchers.IO) {
         cacheDataSource.saveItem(cachedItem.getItem())
     }
+
+    override suspend fun removeItem(text: String) = withContext(Dispatchers.IO) {
+        cacheDataSource.removeItem(text)
+    }
 }

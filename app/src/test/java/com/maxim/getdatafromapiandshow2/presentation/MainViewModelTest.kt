@@ -16,7 +16,7 @@ class MainViewModelTest {
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
         interactor.returnSuccess = true
-        viewModel.getFact()
+        viewModel.getItem()
         assertEquals(State.Success(text = "fact text"), communication.value)
     }
 
@@ -27,7 +27,7 @@ class MainViewModelTest {
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
         interactor.returnSuccess = false
-        viewModel.getFact()
+        viewModel.getItem()
         assertEquals(State.Failed(text = "error text"), communication.value)
     }
 
@@ -37,7 +37,7 @@ class MainViewModelTest {
         val communication = FakeCommunication()
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
-        viewModel.saveFact()
+        viewModel.saveItem()
         assertEquals(1, interactor.saveFactCount)
     }
 
