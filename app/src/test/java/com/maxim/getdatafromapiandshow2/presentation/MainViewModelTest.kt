@@ -1,7 +1,9 @@
-package com.maxim.getdatafromapiandshow2
+package com.maxim.getdatafromapiandshow2.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.maxim.getdatafromapiandshow2.domain.DomainItem
+import com.maxim.getdatafromapiandshow2.domain.Interactor
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.maxim.getdatafromapiandshow2
+package com.maxim.getdatafromapiandshow2.presentation
 
 interface UiItem {
     fun show(communication: Communication)

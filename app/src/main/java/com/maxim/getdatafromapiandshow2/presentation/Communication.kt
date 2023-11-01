@@ -1,4 +1,4 @@
-package com.maxim.getdatafromapiandshow2
+package com.maxim.getdatafromapiandshow2.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer

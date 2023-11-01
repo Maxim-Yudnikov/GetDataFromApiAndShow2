@@ -1,9 +1,10 @@
-package com.maxim.getdatafromapiandshow2
+package com.maxim.getdatafromapiandshow2.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maxim.getdatafromapiandshow2.domain.Interactor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ class MainViewModel(
 ) : ViewModel() {
     fun getFact() {
         viewModelScope.launch(dispatcher) {
+            communication.show(State.Progress)
             interactor.getFact().map().show(communication)
         }
     }
