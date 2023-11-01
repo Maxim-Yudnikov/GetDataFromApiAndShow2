@@ -4,6 +4,7 @@ import com.maxim.getdatafromapiandshow2.data.cache.CacheDataSource
 import com.maxim.getdatafromapiandshow2.data.domain.NoConnectionException
 import com.maxim.getdatafromapiandshow2.data.domain.ServiceUnavailableException
 import com.maxim.getdatafromapiandshow2.data.net.CloudDataSource
+import com.maxim.getdatafromapiandshow2.domain.DomainItem
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
@@ -17,7 +18,7 @@ class BaseRepositoryTest {
 
         cloudDataSource.returnType = 0
         val actual = repository.getItem()
-        val expected = DataItem.BaseDataItem("item")
+        val expected = DomainItem.BaseDomainItem("item")
         assertEquals(expected, actual)
     }
 
@@ -47,11 +48,11 @@ class BaseRepositoryTest {
         val cacheDataSource = FakeCacheDataSource()
         val repository = BaseRepository(cloudDataSource, cacheDataSource)
 
-        val item = DataItem.BaseDataItem("data item")
+        val item = DomainItem.BaseDomainItem("data item")
         repository.saveItem(item)
 
         assertEquals(1, cacheDataSource.savedFacts.count())
-        assertEquals(item, cacheDataSource.savedFacts[0])
+        assertEquals(DataItem.BaseDataItem("data item"), cacheDataSource.savedFacts[0])
     }
 
     @Test
@@ -60,17 +61,17 @@ class BaseRepositoryTest {
         val cacheDataSource = FakeCacheDataSource()
         val repository = BaseRepository(cloudDataSource, cacheDataSource)
 
-        repository.saveItem(DataItem.BaseDataItem("data item 1"))
-        repository.saveItem(DataItem.BaseDataItem("data item 2"))
+        repository.saveItem(DomainItem.BaseDomainItem("data item 1"))
+        repository.saveItem(DomainItem.BaseDomainItem("data item 2"))
 
         val actual = repository.getAllItems()
         val expected = listOf(
-            DataItem.BaseDataItem("data item 1"),
-            DataItem.BaseDataItem("data item 2")
+            DomainItem.BaseDomainItem("data item 1"),
+            DomainItem.BaseDomainItem("data item 2")
         )
 
         assertEquals(2, cacheDataSource.savedFacts.count())
-        assertEquals(expected, expected)
+        assertEquals(expected, actual)
     }
 
 

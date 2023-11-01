@@ -5,8 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class BaseCacheDataSource(
-    private val dao: Dao,
-    private val dataToRoomMapper: DataToRoomMapper
+    private val dao: Dao
 ) : CacheDataSource {
     override suspend fun getAllItems(): List<DataItem> = withContext(Dispatchers.IO) {
         val roomList = dao.getAllFacts()
@@ -14,6 +13,6 @@ class BaseCacheDataSource(
     }
 
     override suspend fun saveItem(fact: DataItem) = withContext(Dispatchers.IO) {
-        dao.insertFact(dataToRoomMapper.map(fact))
+        dao.insertFact(fact.toRoomItem())
     }
 }

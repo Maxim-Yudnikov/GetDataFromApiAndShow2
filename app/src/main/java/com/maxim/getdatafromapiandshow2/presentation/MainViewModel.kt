@@ -17,7 +17,7 @@ class MainViewModel(
     fun getFact() {
         viewModelScope.launch(dispatcher) {
             communication.show(State.Progress)
-            interactor.getFact().map().show(communication)
+            interactor.getFact().mapToUi().show(communication)
         }
     }
     fun observe(owner: LifecycleOwner, observer: Observer<State>) {

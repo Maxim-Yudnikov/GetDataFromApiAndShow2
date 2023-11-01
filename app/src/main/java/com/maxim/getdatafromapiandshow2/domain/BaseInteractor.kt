@@ -9,9 +9,17 @@ class BaseInteractor(
 ): Interactor {
     override suspend fun getFact(): DomainItem {
         return try {
-            repository.getItem().toDomainItem()
+            repository.getItem()
         } catch (e: Exception) {
             DomainItem.FailedDomainItem(failureHandler.handle(e).getMessage())
         }
+    }
+
+    override suspend fun getAllFacts(): List<DomainItem> {
+        return repository.getAllItems()
+    }
+
+    override suspend fun saveFact(fact: DomainItem) {
+        repository.saveItem(fact)
     }
 }

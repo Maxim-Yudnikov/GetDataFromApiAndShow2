@@ -4,9 +4,6 @@ import android.app.Application
 import com.maxim.getdatafromapiandshow2.data.BaseRepository
 import com.maxim.getdatafromapiandshow2.data.cache.BaseCacheDataSource
 import com.maxim.getdatafromapiandshow2.data.cache.BaseCacheModule
-import com.maxim.getdatafromapiandshow2.data.cache.BaseDataToRoomMapper
-import com.maxim.getdatafromapiandshow2.data.cache.CacheModule
-import com.maxim.getdatafromapiandshow2.data.cache.RoomFactsDatabase
 import com.maxim.getdatafromapiandshow2.data.net.BaseCloudDataSource
 import com.maxim.getdatafromapiandshow2.data.net.BaseFailureHandler
 import com.maxim.getdatafromapiandshow2.data.net.FactService
@@ -26,7 +23,7 @@ class App : Application() {
 
         val repository = BaseRepository(
             BaseCloudDataSource(retrofit.create(FactService::class.java)),
-            BaseCacheDataSource(BaseCacheModule(this).provideDataBase().dao(), BaseDataToRoomMapper())
+            BaseCacheDataSource(BaseCacheModule(this).provideDataBase().dao())
         )
         viewModel =
             MainViewModel(BaseInteractor(repository, BaseFailureHandler()), BaseCommunication())

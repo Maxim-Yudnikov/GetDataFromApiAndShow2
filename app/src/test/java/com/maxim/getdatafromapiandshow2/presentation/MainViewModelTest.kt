@@ -40,6 +40,14 @@ class MainViewModelTest {
             else
                 DomainItem.FailedDomainItem("error text")
         }
+
+        override suspend fun getAllFacts(): List<DomainItem> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun saveFact(fact: DomainItem) {
+            TODO("Not yet implemented")
+        }
     }
 
     private class FakeCommunication : Communication {

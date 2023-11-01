@@ -1,7 +1,9 @@
 package com.maxim.getdatafromapiandshow2.data
 
+import com.maxim.getdatafromapiandshow2.domain.DomainItem
+
 interface Repository {
-    suspend fun getItem(): DataItem
-    suspend fun getAllItems(): List<DataItem>
-    suspend fun saveItem(item: DataItem)
+    suspend fun getItem(): DomainItem
+    suspend fun getAllItems(): List<DomainItem>
+    suspend fun saveItem(item: DomainItem)
 }
