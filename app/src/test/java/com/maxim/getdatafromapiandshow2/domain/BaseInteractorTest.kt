@@ -65,5 +65,9 @@ class BaseInteractorTest {
         override suspend fun saveItem() {
             TODO("Not yet implemented")
         }
+
+        override suspend fun removeItem(text: String) {
+            TODO("Not yet implemented")
+        }
     }
 }

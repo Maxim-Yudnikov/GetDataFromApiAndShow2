@@ -92,6 +92,10 @@ class BaseRepositoryTest {
         override suspend fun saveItem(fact: DataItem) {
             savedFacts.add(fact)
         }
+
+        override suspend fun removeItem(text: String) {
+            TODO("Not yet implemented")
+        }
     }
 
 

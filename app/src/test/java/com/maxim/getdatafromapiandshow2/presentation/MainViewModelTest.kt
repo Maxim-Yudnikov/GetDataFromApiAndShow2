@@ -2,6 +2,7 @@ package com.maxim.getdatafromapiandshow2.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DiffUtil
 import com.maxim.getdatafromapiandshow2.domain.DomainItem
 import com.maxim.getdatafromapiandshow2.domain.Interactor
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,10 @@ class MainViewModelTest {
         override suspend fun saveFact() {
             saveFactCount++
         }
+
+        override suspend fun removeItem(text: String) {
+            TODO("Not yet implemented")
+        }
     }
 
     private class FakeCommunication : Communication {
@@ -69,5 +74,22 @@ class MainViewModelTest {
         }
 
         override fun observe(owner: LifecycleOwner, observer: Observer<State>) {}
+
+
+        override fun getList(): List<UiItem> {
+            TODO("Not yet implemented")
+        }
+
+        override fun showList(list: List<UiItem>) {
+            TODO("Not yet implemented")
+        }
+
+        override fun observeList(owner: LifecycleOwner, observer: Observer<List<UiItem>>) {
+            TODO("Not yet implemented")
+        }
+
+        override fun getDiffResult(): DiffUtil.DiffResult {
+            TODO("Not yet implemented")
+        }
     }
 }
