@@ -12,6 +12,10 @@ class ServiceUnavailableError: BaseFailure {
     override fun getMessage() = "Service unavailable"
 }
 
+class NoCachedDataError: BaseFailure {
+    override fun getMessage() = "No cached data"
+}
+
 class UnknownError: BaseFailure {
     override fun getMessage() = "Unknown error"
 }

@@ -1,6 +1,8 @@
 package com.maxim.getdatafromapiandshow2.data.net
 
 import com.maxim.getdatafromapiandshow2.data.domain.BaseFailure
+import com.maxim.getdatafromapiandshow2.data.domain.NoCachedDataError
+import com.maxim.getdatafromapiandshow2.data.domain.NoCachedDataException
 import com.maxim.getdatafromapiandshow2.data.domain.NoConnectionError
 import com.maxim.getdatafromapiandshow2.data.domain.NoConnectionException
 import com.maxim.getdatafromapiandshow2.data.domain.ServiceUnavailableError
@@ -12,6 +14,7 @@ class BaseFailureHandler: FailureHandler {
         return when(e) {
             is NoConnectionException -> NoConnectionError()
             is ServiceUnavailableException -> ServiceUnavailableError()
+            is NoCachedDataException -> NoCachedDataError()
             else -> UnknownError()
         }
     }
