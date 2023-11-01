@@ -31,9 +31,20 @@ class MainViewModelTest {
         assertEquals(State.Failed(text = "error text"), communication.value)
     }
 
+    @Test
+    fun test_save_item() {
+        val interactor = FakeInteractor()
+        val communication = FakeCommunication()
+        val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
+
+        viewModel.saveFact()
+        assertEquals(1, interactor.saveFactCount)
+    }
+
 
     private class FakeInteractor : Interactor {
         var returnSuccess = true
+        var saveFactCount = 0
         override suspend fun getFact(): DomainItem {
             return if (returnSuccess)
                 DomainItem.BaseDomainItem("fact text")
@@ -45,8 +56,8 @@ class MainViewModelTest {
             TODO("Not yet implemented")
         }
 
-        override suspend fun saveFact(fact: DomainItem) {
-            TODO("Not yet implemented")
+        override suspend fun saveFact() {
+            saveFactCount++
         }
     }
 

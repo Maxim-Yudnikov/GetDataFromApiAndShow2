@@ -4,6 +4,7 @@ import android.app.Application
 import com.maxim.getdatafromapiandshow2.data.BaseRepository
 import com.maxim.getdatafromapiandshow2.data.cache.BaseCacheDataSource
 import com.maxim.getdatafromapiandshow2.data.cache.BaseCacheModule
+import com.maxim.getdatafromapiandshow2.data.cache.BaseCachedItem
 import com.maxim.getdatafromapiandshow2.data.net.BaseCloudDataSource
 import com.maxim.getdatafromapiandshow2.data.net.BaseFailureHandler
 import com.maxim.getdatafromapiandshow2.data.net.FactService
@@ -23,7 +24,8 @@ class App : Application() {
 
         val repository = BaseRepository(
             BaseCloudDataSource(retrofit.create(FactService::class.java)),
-            BaseCacheDataSource(BaseCacheModule(this).provideDataBase().dao())
+            BaseCacheDataSource(BaseCacheModule(this).provideDataBase().dao()),
+            BaseCachedItem()
         )
         viewModel =
             MainViewModel(BaseInteractor(repository, BaseFailureHandler()), BaseCommunication())

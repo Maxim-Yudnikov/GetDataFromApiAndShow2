@@ -20,6 +20,13 @@ class MainViewModel(
             interactor.getFact().mapToUi().show(communication)
         }
     }
+
+    fun saveFact() {
+        viewModelScope.launch(dispatcher) {
+            interactor.saveFact()
+        }
+    }
+
     fun observe(owner: LifecycleOwner, observer: Observer<State>) {
         communication.observe(owner, observer)
     }

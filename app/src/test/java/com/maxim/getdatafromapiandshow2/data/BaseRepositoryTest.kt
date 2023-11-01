@@ -1,5 +1,6 @@
 package com.maxim.getdatafromapiandshow2.data
 
+import com.maxim.getdatafromapiandshow2.data.cache.BaseCachedItem
 import com.maxim.getdatafromapiandshow2.data.cache.CacheDataSource
 import com.maxim.getdatafromapiandshow2.data.domain.NoConnectionException
 import com.maxim.getdatafromapiandshow2.data.domain.ServiceUnavailableException
@@ -14,7 +15,8 @@ class BaseRepositoryTest {
     fun test_success() = runBlocking {
         val cloudDataSource = FakeCloudDataSource()
         val cacheDataSource = FakeCacheDataSource()
-        val repository = BaseRepository(cloudDataSource, cacheDataSource)
+        val cachedItem = BaseCachedItem()
+        val repository = BaseRepository(cloudDataSource, cacheDataSource, cachedItem)
 
         cloudDataSource.returnType = 0
         val actual = repository.getItem()
@@ -26,7 +28,8 @@ class BaseRepositoryTest {
     fun test_no_connection() = runBlocking {
         val cloudDataSource = FakeCloudDataSource()
         val cacheDataSource = FakeCacheDataSource()
-        val repository = BaseRepository(cloudDataSource, cacheDataSource)
+        val cachedItem = BaseCachedItem()
+        val repository = BaseRepository(cloudDataSource, cacheDataSource, cachedItem)
 
         cloudDataSource.returnType = 1
         val actual = repository.getItem()
@@ -36,7 +39,8 @@ class BaseRepositoryTest {
     fun test_service_unavailable() = runBlocking {
         val cloudDataSource = FakeCloudDataSource()
         val cacheDataSource = FakeCacheDataSource()
-        val repository = BaseRepository(cloudDataSource, cacheDataSource)
+        val cachedItem = BaseCachedItem()
+        val repository = BaseRepository(cloudDataSource, cacheDataSource, cachedItem)
 
         cloudDataSource.returnType = 2
         val actual = repository.getItem()
@@ -46,10 +50,12 @@ class BaseRepositoryTest {
     fun test_save_item() = runBlocking {
         val cloudDataSource = FakeCloudDataSource()
         val cacheDataSource = FakeCacheDataSource()
-        val repository = BaseRepository(cloudDataSource, cacheDataSource)
+        val cachedItem = BaseCachedItem()
+        val repository = BaseRepository(cloudDataSource, cacheDataSource, cachedItem)
 
-        val item = DomainItem.BaseDomainItem("data item")
-        repository.saveItem(item)
+        val item = DataItem.BaseDataItem("data item")
+        cachedItem.saveItem(item)
+        repository.saveItem()
 
         assertEquals(1, cacheDataSource.savedFacts.count())
         assertEquals(DataItem.BaseDataItem("data item"), cacheDataSource.savedFacts[0])
@@ -59,10 +65,13 @@ class BaseRepositoryTest {
     fun test_save_two_items_and_get_list() = runBlocking {
         val cloudDataSource = FakeCloudDataSource()
         val cacheDataSource = FakeCacheDataSource()
-        val repository = BaseRepository(cloudDataSource, cacheDataSource)
+        val cachedItem = BaseCachedItem()
+        val repository = BaseRepository(cloudDataSource, cacheDataSource, cachedItem)
 
-        repository.saveItem(DomainItem.BaseDomainItem("data item 1"))
-        repository.saveItem(DomainItem.BaseDomainItem("data item 2"))
+        cachedItem.saveItem(DataItem.BaseDataItem("data item 1"))
+        repository.saveItem()
+        cachedItem.saveItem(DataItem.BaseDataItem("data item 2"))
+        repository.saveItem()
 
         val actual = repository.getAllItems()
         val expected = listOf(
@@ -74,6 +83,18 @@ class BaseRepositoryTest {
         assertEquals(expected, actual)
     }
 
+    private class FakeCacheDataSource : CacheDataSource {
+        var savedFacts = mutableListOf<DataItem>()
+        override suspend fun getAllItems(): List<DataItem> {
+            return savedFacts
+        }
+
+        override suspend fun saveItem(fact: DataItem) {
+            savedFacts.add(fact)
+        }
+    }
+
+
 
     private class FakeCloudDataSource : CloudDataSource {
         var returnType = 0
@@ -83,17 +104,6 @@ class BaseRepositoryTest {
                 1 -> throw NoConnectionException()
                 else -> throw ServiceUnavailableException()
             }
-        }
-    }
-
-    private class FakeCacheDataSource : CacheDataSource {
-        var savedFacts = mutableListOf<DataItem>()
-        override suspend fun getAllItems(): List<DataItem> {
-            return savedFacts
-        }
-
-        override suspend fun saveItem(fact: DataItem) {
-            savedFacts.add(fact)
         }
     }
 }

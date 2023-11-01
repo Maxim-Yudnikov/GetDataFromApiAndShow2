@@ -19,7 +19,7 @@ class BaseInteractor(
         return repository.getAllItems()
     }
 
-    override suspend fun saveFact(fact: DomainItem) {
-        repository.saveItem(fact)
+    override suspend fun saveFact() {
+        repository.saveItem()
     }
 }

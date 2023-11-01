@@ -46,34 +46,6 @@ class BaseInteractorTest {
         assertEquals(expected, actual)
     }
 
-    @Test
-    fun test_save_item() = runBlocking {
-        val repository = FakeRepository()
-        val failureHandler = BaseFailureHandler()
-        val interactor = BaseInteractor(repository, failureHandler)
-
-        interactor.saveFact(DomainItem.BaseDomainItem("fact 1"))
-        assertEquals(1, repository.cacheList.size)
-        assertEquals(listOf(DataItem.BaseDataItem("fact 1")), repository.cacheList)
-    }
-
-    @Test
-    fun test_save_two_items_and_get_list() = runBlocking {
-        val repository = FakeRepository()
-        val failureHandler = BaseFailureHandler()
-        val interactor = BaseInteractor(repository, failureHandler)
-
-        interactor.saveFact(DomainItem.BaseDomainItem("fact 1"))
-        interactor.saveFact(DomainItem.BaseDomainItem("fact 2"))
-        assertEquals(2, repository.cacheList.size)
-        assertEquals(
-            listOf(
-                DataItem.BaseDataItem("fact 1"),
-                DataItem.BaseDataItem("fact 2")
-            ), repository.cacheList
-        )
-    }
-
 
     private class FakeRepository : Repository {
         var returnType = 0
@@ -90,8 +62,8 @@ class BaseInteractorTest {
             return cacheList.map { it.toDomainItem() }
         }
 
-        override suspend fun saveItem(item: DomainItem) {
-            cacheList.add(item.mapToData())
+        override suspend fun saveItem() {
+            TODO("Not yet implemented")
         }
     }
 }
