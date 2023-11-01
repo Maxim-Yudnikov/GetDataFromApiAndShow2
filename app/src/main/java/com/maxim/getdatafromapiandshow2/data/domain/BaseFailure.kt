@@ -13,5 +13,5 @@ class ServiceUnavailableError: BaseFailure {
 }
 
 class UnknownError: BaseFailure {
-    override fun getMessage() = "Unknown rrror"
+    override fun getMessage() = "Unknown error"
 }
