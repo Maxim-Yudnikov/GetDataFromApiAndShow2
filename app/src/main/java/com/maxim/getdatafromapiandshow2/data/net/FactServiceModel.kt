@@ -6,5 +6,5 @@ data class FactServiceModel(
     private val fact: String
 ) {
     //todo not override fun
-    fun toDataModel(): DataItem = DataItem.BaseDataItem(fact)
+    fun toDataItem(): DataItem = DataItem.BaseDataItem(fact)
 }

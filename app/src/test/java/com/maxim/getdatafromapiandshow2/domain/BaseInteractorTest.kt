@@ -54,5 +54,13 @@ class BaseInteractorTest {
                 else -> throw ServiceUnavailableException()
             }
         }
+
+        override suspend fun getAllItems(): List<DataItem> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun saveItem(item: DataItem) {
+            TODO("Not yet implemented")
+        }
     }
 }
