@@ -14,18 +14,34 @@ class MainViewModelTest {
         val communication = FakeCommunication()
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
+        interactor.returnSuccess = true
         viewModel.getFact()
         assertEquals(State.Success(text = "fact text"), communication.value)
     }
 
+    @Test
+    fun test_get_error_data() {
+        val interactor = FakeInteractor()
+        val communication = FakeCommunication()
+        val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
-    private class FakeInteractor: Interactor {
-        override suspend fun getFact() : DomainItem {
-            return DomainItem.BaseDomainItem("fact text")
+        interactor.returnSuccess = false
+        viewModel.getFact()
+        assertEquals(State.Failed(text = "error text"), communication.value)
+    }
+
+
+    private class FakeInteractor : Interactor {
+        var returnSuccess = true
+        override suspend fun getFact(): DomainItem {
+            return if (returnSuccess)
+                DomainItem.BaseDomainItem("fact text")
+            else
+                DomainItem.FailedDomainitem("error text")
         }
     }
 
-    private class FakeCommunication: Communication {
+    private class FakeCommunication : Communication {
         var value: State? = null
 
         override fun show(state: State) {
