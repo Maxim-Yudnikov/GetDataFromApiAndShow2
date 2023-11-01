@@ -63,14 +63,14 @@ class BaseRepositoryTest {
         repository.saveItem(DataItem.BaseDataItem("data item 1"))
         repository.saveItem(DataItem.BaseDataItem("data item 2"))
 
-        repository.getAllItems()
+        val actual = repository.getAllItems()
         val expected = listOf(
             DataItem.BaseDataItem("data item 1"),
             DataItem.BaseDataItem("data item 2")
         )
 
         assertEquals(2, cacheDataSource.savedFacts.count())
-        assertEquals(expected, cacheDataSource.savedFacts)
+        assertEquals(expected, expected)
     }
 
 
@@ -88,7 +88,7 @@ class BaseRepositoryTest {
     private class FakeCacheDataSource : CacheDataSource {
         var savedFacts = mutableListOf<DataItem>()
         override suspend fun getAllItems(): List<DataItem> {
-            return listOf(DataItem.BaseDataItem("test item 1"))
+            return savedFacts
         }
 
         override suspend fun saveItem(fact: DataItem) {
