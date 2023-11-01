@@ -8,13 +8,16 @@ interface DataItem {
     //todo data to room mapper
     fun toRoomItem(): FactRoomModel
 
-    data class BaseDataItem(private val text: String) : DataItem {
-        override fun toDomainItem(): DomainItem = DomainItem.BaseDomainItem(text)
-        override fun toRoomItem() = FactRoomModel(null, text)
+    abstract class Abstract(private val text: String) : DataItem {
+        override fun toRoomItem() = FactRoomModel(null, text, System.currentTimeMillis())
     }
 
-    data class FailedDataItem(private val text: String) : DataItem {
+    data class BaseDataItem(private val text: String) : Abstract(text) {
+        override fun toDomainItem(): DomainItem = DomainItem.BaseDomainItem(text)
+
+    }
+
+    data class FailedDataItem(private val text: String) : Abstract(text) {
         override fun toDomainItem(): DomainItem = DomainItem.FailedDomainItem(text)
-        override fun toRoomItem() = FactRoomModel(null, text)
     }
 }

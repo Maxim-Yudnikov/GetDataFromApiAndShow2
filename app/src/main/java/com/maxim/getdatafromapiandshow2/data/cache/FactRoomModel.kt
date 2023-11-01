@@ -8,7 +8,8 @@ import com.maxim.getdatafromapiandshow2.data.DataItem
 data class FactRoomModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
-    val text: String
+    val text: String,
+    val time: Long
 ) {
     //todo not override method
     fun toDataItem(): DataItem = DataItem.BaseDataItem(text)
