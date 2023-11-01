@@ -10,7 +10,7 @@ class MainViewModelTest {
     fun test_get_data() {
         val interactor = FakeInteractor()
         val communication = FakeCommunication()
-        val mapper = BaseDataToUiMapper()
+        val mapper = BaseDomainToUiMapper()
         val viewModel = MainViewModel(interactor, communication, mapper)
 
         viewModel.getFact()
