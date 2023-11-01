@@ -3,7 +3,6 @@ package com.maxim.getdatafromapiandshow2
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -37,7 +36,7 @@ class MainViewModelTest {
             return if (returnSuccess)
                 DomainItem.BaseDomainItem("fact text")
             else
-                DomainItem.FailedDomainitem("error text")
+                DomainItem.FailedDomainItem("error text")
         }
     }
 
