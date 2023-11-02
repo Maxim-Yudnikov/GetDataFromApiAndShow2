@@ -11,6 +11,8 @@ import com.maxim.getdatafromapiandshow2.data.net.FactService
 import com.maxim.getdatafromapiandshow2.domain.BaseInteractor
 import com.maxim.getdatafromapiandshow2.presentation.BaseCommunication
 import com.maxim.getdatafromapiandshow2.presentation.MainViewModel
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,8 +21,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val retrofit = Retrofit.Builder().baseUrl("https://www.google.com")
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.api-ninjas.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create()).client(client).build()
 
         val repository = BaseRepository(
             BaseCloudDataSource(retrofit.create(FactService::class.java)),
