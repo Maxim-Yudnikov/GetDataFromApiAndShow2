@@ -11,25 +11,13 @@ import org.junit.Test
 
 class MainViewModelTest {
     @Test
-    fun test_get_data() {
+    fun test_get_item() {
         val interactor = FakeInteractor()
         val communication = FakeCommunication()
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
-        interactor.returnSuccess = true
         viewModel.getItem()
-        assertEquals(State.Success(text = "fact text"), communication.value)
-    }
-
-    @Test
-    fun test_get_error_data() {
-        val interactor = FakeInteractor()
-        val communication = FakeCommunication()
-        val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
-
-        interactor.returnSuccess = false
-        viewModel.getItem()
-        assertEquals(State.Failed(text = "error text"), communication.value)
+        assertEquals(State.Success("text"), communication.state)
     }
 
     @Test
@@ -39,49 +27,97 @@ class MainViewModelTest {
         val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
 
         viewModel.saveItem()
-        assertEquals(1, interactor.saveFactCount)
+        assertEquals(1, interactor.saveFactCounter)
+        val expected = listOf(
+            UiItem.BaseUiItem("item 1"), UiItem.BaseUiItem("item 2"),
+            UiItem.BaseUiItem("item 3"), UiItem.BaseUiItem("item 4")
+        )
+        for(i in expected.indices) {
+            assertEquals(true, expected[i].same(communication.itemList!![i]))
+        }
+    }
+
+    @Test
+    fun test_get_item_list() {
+        val interactor = FakeInteractor()
+        val communication = FakeCommunication()
+        val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
+
+        viewModel.getItemList()
+        val expected = listOf(
+            UiItem.BaseUiItem("item 1"), UiItem.BaseUiItem("item 2"),
+            UiItem.BaseUiItem("item 3"), UiItem.BaseUiItem("item 4")
+        )
+        for(i in expected.indices) {
+            assertEquals(true, expected[i].same(communication.itemList!![i]))
+        }
+    }
+
+    @Test
+    fun test_remove_item() {
+        val interactor = FakeInteractor()
+        val communication = FakeCommunication()
+        val viewModel = MainViewModel(interactor, communication, Dispatchers.Unconfined)
+
+        viewModel.removeItem("test item")
+        assertEquals(1, interactor.removeItemCounter)
+        assertEquals("test item", interactor.removeItemValue)
+        val expected = listOf(
+            UiItem.BaseUiItem("item 1"), UiItem.BaseUiItem("item 2"),
+            UiItem.BaseUiItem("item 3"), UiItem.BaseUiItem("item 4")
+        )
+        for(i in expected.indices) {
+            assertEquals(true, expected[i].same(communication.itemList!![i]))
+        }
     }
 
 
     private class FakeInteractor : Interactor {
         var returnSuccess = true
-        var saveFactCount = 0
+        var saveFactCounter = 0
+        var removeItemCounter = 0
+        var removeItemValue = ""
         override suspend fun getFact(): DomainItem {
             return if (returnSuccess)
-                DomainItem.BaseDomainItem("fact text")
+                DomainItem.BaseDomainItem("text")
             else
-                DomainItem.FailedDomainItem("error text")
+                DomainItem.FailedDomainItem("error")
         }
 
         override suspend fun getAllFacts(): List<DomainItem> {
-            TODO("Not yet implemented")
+            return listOf(
+                DomainItem.BaseDomainItem("item 1"), DomainItem.BaseDomainItem("item 2"),
+                DomainItem.BaseDomainItem("item 3"), DomainItem.BaseDomainItem("item 4")
+            )
         }
 
         override suspend fun saveFact() {
-            saveFactCount++
+            saveFactCounter++
         }
 
         override suspend fun removeItem(text: String) {
-            TODO("Not yet implemented")
+            removeItemCounter++
+            removeItemValue = text
         }
     }
 
     private class FakeCommunication : Communication {
-        var value: State? = null
-
+        var state: State? = null
+        var itemList: List<UiItem>? = null
         override fun show(state: State) {
-            value = state
+            this.state = state
         }
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<State>) {}
-
+        override fun observe(owner: LifecycleOwner, observer: Observer<State>) {
+            TODO("Not yet implemented")
+        }
 
         override fun getList(): List<UiItem> {
             TODO("Not yet implemented")
         }
 
         override fun showList(list: List<UiItem>) {
-            TODO("Not yet implemented")
+            this.itemList = list
         }
 
         override fun observeList(owner: LifecycleOwner, observer: Observer<List<UiItem>>) {
