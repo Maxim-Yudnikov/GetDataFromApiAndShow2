@@ -34,9 +34,7 @@ class App : Application() {
             .baseUrl("https://api.api-ninjas.com/v1/")
             .addConverterFactory(GsonConverterFactory.create()).client(client).build()
 
-        val cacheDataSource = if (useMocks) MockCacheDataSource() else BaseCacheDataSource(
-            BaseCacheModule(this).provideDataBase().dao()
-        )
+        val cacheDataSource = BaseCacheDataSource(BaseCacheModule(this).provideDataBase().dao())
         val cloudDataSource = if (useMocks) MockCloudDataSource() else BaseCloudDataSource(
             retrofit.create(FactService::class.java)
         )
