@@ -2,13 +2,12 @@ package com.maxim.getdatafromapiandshow2.domain
 
 import com.maxim.getdatafromapiandshow2.data.Repository
 import com.maxim.getdatafromapiandshow2.data.net.FailureHandler
-import com.maxim.getdatafromapiandshow2.presentation.UiItem
 
 class BaseInteractor(
     private val repository: Repository,
     private val failureHandler: FailureHandler
 ): Interactor {
-    override suspend fun getFact(): DomainItem {
+    override suspend fun getItem(): DomainItem {
         return try {
             repository.getItem()
         } catch (e: Exception) {
@@ -16,7 +15,7 @@ class BaseInteractor(
         }
     }
 
-    override suspend fun getAllFacts(): List<DomainItem> {
+    override suspend fun getItemsList(): List<DomainItem> {
         return try {
             repository.getAllItems()
         } catch (e: Exception) {
@@ -24,7 +23,7 @@ class BaseInteractor(
         }
     }
 
-    override suspend fun saveFact() {
+    override suspend fun saveItem() {
         repository.saveItem()
     }
 

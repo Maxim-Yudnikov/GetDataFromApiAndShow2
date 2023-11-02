@@ -77,21 +77,21 @@ class MainViewModelTest {
         var saveFactCounter = 0
         var removeItemCounter = 0
         var removeItemValue = ""
-        override suspend fun getFact(): DomainItem {
+        override suspend fun getItem(): DomainItem {
             return if (returnSuccess)
                 DomainItem.BaseDomainItem("text")
             else
                 DomainItem.FailedDomainItem("error")
         }
 
-        override suspend fun getAllFacts(): List<DomainItem> {
+        override suspend fun getItemsList(): List<DomainItem> {
             return listOf(
                 DomainItem.BaseDomainItem("item 1"), DomainItem.BaseDomainItem("item 2"),
                 DomainItem.BaseDomainItem("item 3"), DomainItem.BaseDomainItem("item 4")
             )
         }
 
-        override suspend fun saveFact() {
+        override suspend fun saveItem() {
             saveFactCounter++
         }
 

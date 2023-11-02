@@ -18,27 +18,27 @@ class MainViewModel(
     fun getItem() {
         viewModelScope.launch(dispatcher) {
             communication.show(State.Progress)
-            interactor.getFact().mapToUi().show(communication)
+            interactor.getItem().mapToUi().show(communication)
         }
     }
 
     fun saveItem() {
         viewModelScope.launch(dispatcher) {
-            interactor.saveFact()
-            communication.showList(interactor.getAllFacts().map { it.mapToUi() })
+            interactor.saveItem()
+            communication.showList(interactor.getItemsList().map { it.mapToUi() })
         }
     }
 
     fun getItemList() {
         viewModelScope.launch(dispatcher) {
-            communication.showList(interactor.getAllFacts().map { it.mapToUi() })
+            communication.showList(interactor.getItemsList().map { it.mapToUi() })
         }
     }
 
     fun removeItem(text: String) {
         viewModelScope.launch(dispatcher) {
             interactor.removeItem(text)
-            communication.showList(interactor.getAllFacts().map { it.mapToUi() })
+            communication.showList(interactor.getItemsList().map { it.mapToUi() })
         }
     }
 
