@@ -22,7 +22,6 @@ class BaseRepository(
             cachedItem.clear()
             throw e
         }
-
     }
 
     override suspend fun getAllItems(): List<DomainItem> = withContext(Dispatchers.IO) {
